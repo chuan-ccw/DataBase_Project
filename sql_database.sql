@@ -20,6 +20,7 @@ create table order_form
 	(order_form_id		varchar(15),
 	 room_number		varchar(7),
 	 primary key (building, room_number)
+	 
 	);
 
 create table order_form_item

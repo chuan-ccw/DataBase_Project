@@ -9,7 +9,7 @@ create table order
 	(order_id				int,
 	 store_id		        int,
 	 customer_id  			int,
-	 tot_price				numeric(12,0),
+	 tot_price				int,
 	 tot_amount 			int,
 	 status 				varchar(10),
 	 primary key (order_id)
@@ -28,8 +28,8 @@ create table item
 	 size					varchar(10),
 	 ice					varchar(10),
 	 sugar					varchar(10),
-	 temp					varchar(10),
-	 qty 					int,
+	 temperature			varchar(10),
+	 quantity 				int,
 	 primary key (item_id)
 	 foreign key (order_id) references order (order_id)
 	 	on delete set null
@@ -41,7 +41,7 @@ create table product
 	(product_id				int,
 	 name					varchar(10),
 	 photo					varchar(255),
-	 price					numeric(10,0),
+	 price					int,
 	 primary key (product_id)
 	);
 

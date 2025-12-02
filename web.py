@@ -11,6 +11,10 @@ conn = pyodbc.connect(
 )
 
 cursor = conn.cursor()
+order_id = -1
+customer_id = -1
+store_id = -1
+
 
 @app.route("/")
 def first():        
@@ -31,6 +35,8 @@ def choice_identity():
 @app.route("/customer_login.html")
 @app.route("/customer_login",methods=['POST']) #客人登入介面
 def customer_login():    
+    global customer_id
+    global order_id
     if request.method == 'POST':
         phone = request.form.get("phone")
 
@@ -40,6 +46,11 @@ def customer_login():
         if not rows :
             return "customer電話錯誤"
         else:
+            cursor.execute("SELECT customer_id FROM customer WHERE phone=?",(phone,))
+            customer_id = rows[0][0]
+            cursor.execute("SELECT max(order.id) FROM order inner join customer on(order.customer_id=customer.customer_id)")
+            rows = cursor.fetchall()
+            order_id =rows[0][0]+1
             return render_template("order_drink.html")
             
     return render_template("customer_login.html")
@@ -95,9 +106,7 @@ def add_order():
         rows = cursor.fetchall()
         item_id =rows[0][0]+1
 
-        cursor.execute("SELECT max(order.id) FROM order inner join customer on(order.customer_id=customer.customer_id)")
-        rows = cursor.fetchall()
-        order_id =rows[0][0]+1
+
 
         product_name = request.form.get("product_name")
         cursor.execute("SELECT product.id FROM product WHERE product.name=?",(product_name,))
@@ -115,11 +124,19 @@ def add_order():
     
     return render_template("order_drink.html")
 
+
+
+
 @app.route("/inf_bt",methods=['POST']) #店家查看訂單頁面 inf對應按鈕
 def inf_bt():   
     cursor.execute("SELECT order.order_id FROM order")
     rows = cursor.fetchall()
     return render_template("store_check.html",items=rows)
+
+@app.route("/store_check.html")
+@app.route("/store_check",methods=['POST']) #店家查看詳細訂單頁面
+def store_check():
+    print()
 
 @app.route("/admin_order.html")
 @app.route("/admin_order",methods=['POST']) #店家查看訂單頁面

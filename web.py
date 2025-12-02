@@ -28,9 +28,8 @@ def choice_identity():
         
     return render_template("first.html")
 
-
-@app.route("/customer_login",methods=['POST']) #客人登入介面
 @app.route("/customer_login.html")
+@app.route("/customer_login",methods=['POST']) #客人登入介面
 def customer_login():    
     if request.method == 'POST':
         phone = request.form.get("phone")

@@ -57,6 +57,8 @@ def admin_login():
         if not rows :
             return "store id錯誤"
         else:
+            cursor()
+            cursor.execute("INSERT INTO order VALUES ()")
             return render_template("admin_order.html")
             
     return render_template("admin_login.html")
@@ -68,6 +70,11 @@ def product_name():
     rows = cursor.fetchall() 
     return render_template("customer_order.html",items=rows)
 
+@app.route("/store_name",methods=['POST']) #客人選擇店家(下拉式選單)
+def store_name():    
+    cursor.execute("SELECT store.name FROM store")
+    rows = cursor.fetchall() 
+    return render_template("customer_order.html",items=rows)
 
 @app.route("/order_drink.html")
 @app.route("/order_drink",methods=['POST']) #客人客製化頁面
@@ -81,6 +88,32 @@ def order_drink():
 
     return render_template("order_drink.html")
 
+@app.route("/add_order",methods=['GET','POST']) #客人按下加入訂單按鈕(新增一筆明細)
+def add_order():
+    if request.method == 'POST':
+        cursor.execute("SELECT max(item.id) FROM item inner join order on(order.order_id=item.order_id)")
+        rows = cursor.fetchall()
+        item_id =rows[0][0]+1
+
+        cursor.execute("SELECT max(order.id) FROM order inner join customer on(order.customer_id=customer.customer_id)")
+        rows = cursor.fetchall()
+        order_id =rows[0][0]+1
+
+        product_name = request.form.get("product_name")
+        cursor.execute("SELECT product.id FROM product WHERE product.name=?",(product_name,))
+        rows = cursor.fetchall()
+        product_id =rows[0][0]
+
+        size = request.form.get("size")
+        ice = request.form.get("ice")
+        sugar = request.form.get("sugar")
+        temperature = request.form.get("temperature")
+        quantity = request.form.get("quantity")
+
+        cursor.execute("INSERT INTO item VALUES (?,?,?,?,?,?,?,?)",(item_id,order_id,product_id,size,ice,sugar,temperature,quantity))
+        
+    
+    return render_template("order_drink.html")
 
 @app.route("/inf_bt",methods=['POST']) #店家查看訂單頁面 inf對應按鈕
 def inf_bt():   

@@ -20,17 +20,6 @@ store_id = -1
 def first():        
     return render_template("first.html")
 
-@app.route("/choice_identity",methods=['GET','POST']) #選擇是店家要登入還是客人
-def choice_identity():
-    if request.method == 'POST':
-        button = request.form.get("choice")
-
-        if button == "customer_entry":
-            return render_template("customer_login.html")
-        elif button == "store_entry":
-            return render_template("store_login.html")
-        
-    return render_template("first.html")
 
 @app.route("/customer_login.html")
 @app.route("/customer_login",methods=['POST']) #客人登入介面

@@ -115,6 +115,23 @@ def add_order():
     return render_template("order_drink.html")
 
 
+@app.route("/order_summary.html")
+@app.route("/order_summary",methods=['GET','POST']) #客人訂單總覽
+def order_summary():
+    cursor.execute("SELECT sum(item.price) FROM item  WHERE item.order_id=?",(order_id,))
+    tot_price = row[0][0]
+    cursor.execute("SELECT sum(item.quantity) FROM item inner join product on(item.product_id=product.product_id) WHERE item.order_id=?",(order_id,))
+    tot_amount = row[0][0]
+    cursor.execute("SELECT product.name,item.size,item.ice,item.sugar,item.temperature,item.quantity FROM item inner join product on(item.product_id=product.product_id) WHERE item.order_id=?",(order_id,))
+    
+    if request.method == 'POST': #客人結帳按鈕
+        cursor.execute("INSERT INTO [order] VALUES (?,?,?,?,?,"未完成")",(order_id,store_id,customer_id,tot_price,tot_amount))
+        conn.commit()
+        return render_template("order_success.html")
+
+
+    return render_template("order_summary.html",items=rows)
+
 
 
 @app.route("/inf_bt",methods=['GET','POST']) #店家查看訂單頁面 inf對應按鈕

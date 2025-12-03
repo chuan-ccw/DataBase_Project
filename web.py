@@ -4,10 +4,13 @@ import pyodbc
 app = Flask(__name__)
 
 conn = pyodbc.connect(
-    'DRIVER={SQL Server};'
-    'SERVER=你的伺服器名稱;'
-    'DATABASE=資料庫名稱;'
-    'UID=帳號;PWD=密碼'
+    "DRIVER={ODBC Driver 17 for SQL Server};"
+    "SERVER=drinkshop-sqlserver.database.windows.net,1433;"
+    "DATABASE=DrinkShopDB;"
+    "UID=drinkshopadmin;"
+    "PWD=DrinkShop2025;"
+    "Encrypt=yes;"
+    "TrustServerCertificate=no;"
 )
 
 cursor = conn.cursor()

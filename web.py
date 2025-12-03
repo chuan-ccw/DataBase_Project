@@ -127,11 +127,6 @@ def order_summary():
     cursor.execute("SELECT product.name,item.size,item.ice,item.sugar,item.temperature,item.quantity FROM item inner join product on(item.product_id=product.product_id) WHERE item.order_id=?",(order_id,))
     cursor.fetchall()
 
-    if request.method == 'POST': #客人結帳按鈕
-        cursor.execute("INSERT INTO [order] VALUES (?,?,?,?,?,"未完成")",(order_id,store_id,customer_id,tot_price,tot_amount))
-        conn.commit()
-        cursor.execute("SELECT product.name,item.size,item.ice,item.sugar,item.temperature,item.quantity FROM item inner join product on(item.product_id=product.product_id) WHERE item.order_id=?",(order_id,))
-        return render_template("order_success.html",items=rows)
 
 
     return render_template("order_summary.html",items=rows)

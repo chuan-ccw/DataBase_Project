@@ -8,8 +8,8 @@
         body { background-color: #f8f9fa; padding: 20px; }
         .container-fluid { max-width: 1400px; }
         .main-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); min-height: 80vh;}
-        .page-header { border-bottom: 2px solid #198754; margin-bottom: 25px; padding-bottom: 10px; } /* 綠色底線代表歷史 */
-        .detail-panel { background-color: #d1e7dd; border: 1px solid #badbcc; border-radius: 8px; padding: 20px; position: sticky; top: 20px; } /* 綠色系背景 */
+        .page-header { border-bottom: 2px solid #198754; margin-bottom: 25px; padding-bottom: 10px; }
+        .detail-panel { background-color: #d1e7dd; border: 1px solid #badbcc; border-radius: 8px; padding: 20px; position: sticky; top: 20px; }
         .badge { font-size: 0.85em; font-weight: normal; padding: 5px 8px; }
         .tr-active { background-color: #d1e7dd; }
     </style>
@@ -77,7 +77,10 @@
                                 <thead class="table-secondary">
                                     <tr>
                                         <th>品名</th>
-                                        <th>規格</th>
+                                        <th>尺寸</th>
+                                        <th>冰量</th>
+                                        <th>甜度</th>
+                                        <th>加料</th>
                                         <th>數量</th>
                                         <th>小計</th>
                                     </tr>
@@ -86,12 +89,14 @@
                                     {% for item in selected_items %}
                                     <tr>
                                         <td>{{ item.product_name }}</td>
-                                        <td class="text-start">
-                                            <span class="badge bg-secondary">{{ item.size }}</span>
-                                            <span class="badge bg-info text-dark">{{ item.ice }}</span>
-                                            <span class="badge bg-warning text-dark">{{ item.sugar }}</span>
+                                        <td><span class="badge bg-secondary">{{ item.size }}</span></td>
+                                        <td><span class="badge bg-info text-dark">{{ item.ice }}</span></td>
+                                        <td><span class="badge bg-warning text-dark">{{ item.sugar }}</span></td>
+                                        <td>
                                             {% if item.topping != '無' %}
                                             <span class="badge bg-primary">{{ item.topping }}</span>
+                                            {% else %}
+                                            <span class="text-muted">-</span>
                                             {% endif %}
                                         </td>
                                         <td>{{ item.quantity }}</td>

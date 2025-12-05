@@ -76,4 +76,4 @@ CREATE TABLE item
         REFERENCES product(product_id)
         ON DELETE SET NULL
 );
-;
+
